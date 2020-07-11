@@ -1,0 +1,41 @@
+version: '3'
+
+services:
+  db:
+    container_name: posts-api-go-db
+    image: postgres
+    hostname: db
+    environment:
+      GET_HOSTS_FROM: dns
+      POSTGRES_USER: postgres-dev
+      POSTGRES_PASSWORD: not-for-prod
+      POSTGRES_DB: dev
+    ports:
+      - 5432:5432
+    networks:
+      - posts-api-go-net
+  posts-api:
+    container_name: posts-api-go-api
+    image: paltamadura/posts-api-go:v1
+    hostname: posts-api-go-api
+    build:
+      context: .
+      dockerfile: Dockerfile
+    environment:
+      GET_HOSTS_FROM: dns
+    networks:
+      - posts-api-go-net
+    volumes:
+      - .:/go/src/posts-api-go
+    ports:
+      - 8080:8080
+    depends_on:
+      - db
+    links:
+      - db
+    labels:
+      kompose.service.type: LoadBalancer
+
+networks:
+  posts-api-go-net:
+    driver: bridge
