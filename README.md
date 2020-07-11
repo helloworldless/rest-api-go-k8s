@@ -1,7 +1,6 @@
 # Go REST API on Kubernetes
 
-Demo API using Go. Runnable locally via `docker-compose up`.
- Easily deployable to Kubernetes cluster. 
+Demo REST API using Go. Easily deployable to Kubernetes.
 
 ## Running Locally
 
